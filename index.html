@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilo.css">
+    <title>Encuesta sobre Música y Artistas</title>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Encuesta sobre Música y Artistas</h1>
+    </header>
+    
+    <section id="componente">
+        <h5>{{ mensaje }}</h5>
+
+        <!-- Mensaje de salida con imagen si el usuario responde "No" a la primera pregunta -->
+        <article v-if="mostrarImagenDespedida">
+            <p>Yo viendo como me esforcé por realizar esta página y tú no interactúas con ella.</p>
+            <img src="./img/gato.jpg" alt="Imagen de despedida" class="despedida-img">
+        </article>
+
+        <!-- Preguntas de la encuesta -->
+        <article v-if="mostrarPregunta === 1 && !mostrarImagenDespedida">
+            <p>¿Te gusta la música?</p>
+            <button @click="siguientePregunta('si')">Sí</button>
+            <button @click="siguientePregunta('no')">No</button>
+        </article>
+        
+        <article v-if="mostrarPregunta === 2">
+            <p>¿Asistes regularmente a conciertos o festivales de música?</p>
+            <button @click="siguientePregunta('si')">Sí</button>
+            <button @click="siguientePregunta('no')">No</button>
+        </article>
+
+        <article v-if="mostrarPregunta === 3">
+            <p>¿Cuántas horas a la semana dedicas a escuchar música?</p>
+            <input type="number" v-model="respuesta3">
+            <button @click="siguientePregunta()">Siguiente</button>
+        </article>
+
+        <article v-if="mostrarPregunta === 4">
+            <p>¿Tocas algún instrumento musical?</p>
+            <button @click="siguientePregunta('si')">Sí</button>
+            <button @click="siguientePregunta('no')">No</button>
+        </article>
+
+        <!-- Preguntas de comentarios con "Agregar" -->
+        <article v-if="mostrarPregunta === 5">
+            <p>¿Qué género musical prefieres escuchar con mayor frecuencia?</p>
+            <input type="text" v-model="comentario">
+            <button @click="agregarComentario('genero')">Agregar</button>
+            <p v-if="comentarios.genero.length >= 2">{{ mensajeLimite }}</p>
+            <ul>
+                <li v-for="coment in comentarios.genero">{{ coment }}</li>
+            </ul>
+            <button @click="siguientePregunta()">Siguiente</button>
+        </article>
+
+        <article v-if="mostrarPregunta === 6">
+            <p>¿Cuál es tu artista o banda favorita?</p>
+            <input type="text" v-model="comentario">
+            <button @click="agregarComentario('artista')">Agregar</button>
+            <p v-if="comentarios.artista.length >= 2">{{ mensajeLimite }}</p>
+            <ul>
+                <li v-for="coment in comentarios.artista">{{ coment }}</li>
+            </ul>
+            <button @click="siguientePregunta()">Siguiente</button>
+        </article>
+
+        <article v-if="mostrarPregunta === 7">
+            <p>¿Qué canción recomendarías escuchar a alguien que aún no conoce tu género favorito?</p>
+            <input type="text" v-model="comentario">
+            <button @click="agregarComentario('cancion')">Agregar</button>
+            <p v-if="comentarios.cancion.length >= 2">{{ mensajeLimite }}</p>
+            <ul>
+                <li v-for="coment in comentarios.cancion">{{ coment }}</li>
+            </ul>
+            <button @click="mostrarResultadosFinal">Mostrar Resultados</button>
+        </article>
+
+        <!-- Resultados finales -->
+        <section v-if="mostrarResultados" class="resultados">
+            <h2>¡Qué buen gusto musical tienes!</h2>
+            <div class="tarjetas">
+                <div class="tarjeta">
+                    <p><strong>¿Te gusta la música?</strong> {{ respuesta1 }}</p>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>¿Asistes regularmente a conciertos o festivales de música?</strong> {{ respuesta2 }}</p>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>¿Cuántas horas a la semana dedicas a escuchar música?</strong> {{ respuesta3 }}</p>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>¿Tocas algún instrumento musical?</strong> {{ respuesta4 }}</p>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>Géneros musicales preferidos:</strong></p>
+                    <ul>
+                        <li v-for="coment in comentarios.genero">{{ coment }}</li>
+                    </ul>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>Artistas o bandas favoritas:</strong></p>
+                    <ul>
+                        <li v-for="coment in comentarios.artista">{{ coment }}</li>
+                    </ul>
+                </div>
+                <div class="tarjeta">
+                    <p><strong>Canciones recomendadas:</strong></p>
+                    <ul>
+                        <li v-for="coment in comentarios.cancion">{{ coment }}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </section>
+
+    <footer>28 de octubre 2024 - Encuesta sobre Música - Julia Páramo</footer>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>
